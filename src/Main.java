@@ -9,7 +9,7 @@ public class Main {
 	Scanner sc = new Scanner(System.in);
 	
 	void displayMenu() {
-		System.out.println("RAP BATTLE");
+		System.out.println("RAP BATTLE ROBERT");
 		System.out.println();
 		System.out.println("1. Single Player");
 		System.out.println("2. Multiplayer");
