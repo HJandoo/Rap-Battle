@@ -5,11 +5,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-	
+
 	Scanner sc = new Scanner(System.in);
-	
+
 	void displayMenu() {
-		System.out.println("RAP BATTLE ROBERT");
+		System.out.println("RAP BATTLE");
 		System.out.println();
 		System.out.println("1. Single Player");
 		System.out.println("2. Multiplayer");
@@ -32,7 +32,19 @@ public class Main {
 
 	}
 
-	void callName(Dis[] disses) {
+	void yourMumDis(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+		Random r = new Random();
+		int hypeGained = r.nextInt(5);
+
+		System.out.println("You rapped about his mum");
+		System.out.println("You gained " + hypeGained + "% of the crowd hype");
+
+		rappers[rappersBeaten].hypePoints -= hypeGained;
+
+		AITurn(rappers, disses, rappersBeaten);
+	}
+
+	void callName(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
 		Random r = new Random();
 		String adjective;
 		String noun;
@@ -65,18 +77,35 @@ public class Main {
 			}
 			adj.close();
 			nou.close();
+
+			int hypeGained = r.nextInt(21) + 10;
+
+			System.out.println("You gained " + hypeGained
+					+ "% of the crowd hype");
+
+			rappers[rappersBeaten].hypePoints -= hypeGained;
+			
+			AITurn(rappers, disses, rappersBeaten);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+	}
+
+	void teaseDis(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+
+		
+		AITurn(rappers, disses, rappersBeaten);
 	}
 
 	void getMenuChoice(int choice, Rapper[] rappers, Dis[] disses) {
-		
+		int rappersBeaten = 0;
 		choice = sc.nextInt();
 
 		switch (choice) {
 		case 1:
-			singleplayer(rappers, disses);
+			singleplayer(rappers, disses, rappersBeaten);
 			break;
 		case 2:
 			multiplayer();
@@ -84,35 +113,63 @@ public class Main {
 		}
 	}
 
-	void singleplayer(Rapper[] rappers, Dis[] disses) {
-		int rappersBeaten = 0;
+	void singleplayer(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+		rappersBeaten = 0;
 		boolean beaten = false;
+		boolean won;
 
-		System.out.println("You have been challenged by "
-				+ rappers[rappersBeaten].name);
-		System.out.println("He has "
-				+ rappers[rappersBeaten].hypePoints + "% of the crowd's hype");
-		System.out.println("Dis him up to get 100% of the hype");
+		while (!beaten) {
 
-		playGameSP(rappers, disses);
+			System.out.println("You have been challenged by "
+					+ rappers[rappersBeaten].name);
+			System.out.println("He has " + rappers[rappersBeaten].hypePoints
+					+ "% of the crowd's hype");
+			System.out.println("Dis him up to get 100% of the hype");
 
-		if (rappers[rappersBeaten].hypePoints <= 0) {
+			won = false;
 
-			rappersBeaten++;
+			checkIfWon(rappers, disses, rappersBeaten, won, beaten);
 		}
+	}
+	
+	void checkIfWon(Rapper[] rappers, Dis[] disses, int rappersBeaten, boolean won, boolean beaten) {
+		while (rappers[rappersBeaten].hypePoints > 0 && !won) {
+			playGameSP(rappers, disses, rappersBeaten);
 
-		if (beaten) {
+			if (rappers[rappersBeaten].hypePoints <= 0) {
+				System.out.println();
+				System.out.print("You beat "
+						+ rappers[rappersBeaten].name + "!");
+				System.out.println();
+				
+				try {
+					Thread.sleep(4000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				rappersBeaten++;
+				won = true;
+			}
+
+			if (beaten) {
+				System.out.println("GAME OVER");
+			}
 
 		}
-
 	}
 
 	void multiplayer() {
 
 	}
 
-	void playGameSP(Rapper[] rappers, Dis[] disses) {
+	void playGameSP(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
 		int choice = 0;
+
+		System.out.println("Your hype: "
+				+ (100 - rappers[rappersBeaten].hypePoints) + "%");
+		System.out.println(rappers[rappersBeaten].name + "'s hype: "
+				+ rappers[rappersBeaten].hypePoints + "%");
 		System.out.println();
 		System.out.println("What would you like to dis your opponent with?");
 		System.out.println();
@@ -127,18 +184,22 @@ public class Main {
 		}
 		switch (choice) {
 		case 1:
-
+			yourMumDis(rappers, disses, rappersBeaten);
 			break;
 		case 2:
-			callName(disses);
+			callName(rappers, disses, rappersBeaten);
 			break;
 		case 3:
-
+			teaseDis(rappers, disses, rappersBeaten);
 			break;
 		}
 
 	}
 
+	void AITurn(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+		
+	}
+	
 	public Main() {
 		Rapper[] rappers = new Rapper[6];
 		Dis[] disses = new Dis[4];
