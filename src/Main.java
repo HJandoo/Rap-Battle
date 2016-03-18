@@ -114,11 +114,8 @@ public class Main {
 	}
 
 	void singleplayer(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
-		rappersBeaten = 0;
 		boolean beaten = false;
 		boolean won;
-
-		while (!beaten) {
 
 			System.out.println("You have been challenged by "
 					+ rappers[rappersBeaten].name);
@@ -129,7 +126,7 @@ public class Main {
 			won = false;
 
 			checkIfWon(rappers, disses, rappersBeaten, won, beaten);
-		}
+		
 	}
 	
 	void checkIfWon(Rapper[] rappers, Dis[] disses, int rappersBeaten, boolean won, boolean beaten) {
@@ -141,6 +138,8 @@ public class Main {
 				System.out.print("You beat "
 						+ rappers[rappersBeaten].name + "!");
 				System.out.println();
+				System.out.println();
+				System.out.println();
 				
 				try {
 					Thread.sleep(4000);
@@ -150,6 +149,7 @@ public class Main {
 				
 				rappersBeaten++;
 				won = true;
+				singleplayer(rappers, disses, rappersBeaten);
 			}
 
 			if (beaten) {
