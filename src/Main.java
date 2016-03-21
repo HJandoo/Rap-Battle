@@ -18,21 +18,14 @@ public class Main {
 	void setupRappers(Rapper[] rappers) {
 		rappers[0] = new Rapper("Can't-ye East", 50);
 		rappers[1] = new Rapper("Noop Dog", 60);
-		rappers[2] = new Rapper("Lil' Dwayne", 70);
-		rappers[3] = new Rapper("Dr. Andre", 80);
-		rappers[4] = new Rapper("M and M", 90);
-		rappers[5] = new Rapper("Supa Hot Fire", 95);
+		rappers[2] = new Rapper("Lil' Dwayne", 65);
+		rappers[3] = new Rapper("Dr. Andre", 70);
+		rappers[4] = new Rapper("M and M", 80);
+		rappers[5] = new Rapper("3 Pack", 85);
+		rappers[6] = new Rapper("Supa Hot Fire", 90);
 	}
 
-	void setupDisses(Dis[] disses) {
-		disses[0] = new Dis("Your mum", 5);
-		disses[1] = new Dis("Name caller", 20);
-		disses[2] = new Dis("Tease", 30);
-		disses[3] = new Dis("Ender", 1000);
-
-	}
-
-	void yourMumDis(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+	void yourMumDis(Rapper[] rappers, int rappersBeaten) {
 		Random r = new Random();
 		int hypeGained = r.nextInt(6);
 
@@ -41,10 +34,10 @@ public class Main {
 
 		rappers[rappersBeaten].hypePoints -= hypeGained;
 
-		AITurn(rappers, disses, rappersBeaten);
+		AITurn(rappers, rappersBeaten);
 	}
 
-	void yourMumDisAI(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+	void yourMumDisAI(Rapper[] rappers, int rappersBeaten) {
 		Random r = new Random();
 		int hypeGained = r.nextInt(6);
 
@@ -61,7 +54,7 @@ public class Main {
 
 	}
 
-	void callName(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+	void callName(Rapper[] rappers, int rappersBeaten) {
 		Random r = new Random();
 		String adjective;
 		String noun;
@@ -102,7 +95,7 @@ public class Main {
 
 			rappers[rappersBeaten].hypePoints -= hypeGained;
 
-			AITurn(rappers, disses, rappersBeaten);
+			AITurn(rappers, rappersBeaten);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -110,7 +103,7 @@ public class Main {
 
 	}
 
-	void callNameAI(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+	void callNameAI(Rapper[] rappers, int rappersBeaten) {
 		Random r = new Random();
 		String adjective;
 		String noun;
@@ -169,7 +162,7 @@ public class Main {
 
 	}
 
-	void teaseDis(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+	void teaseDis(Rapper[] rappers, int rappersBeaten) {
 
 		String tease;
 		Random r = new Random();
@@ -197,14 +190,14 @@ public class Main {
 
 			rappers[rappersBeaten].hypePoints -= hypeGained;
 
-			AITurn(rappers, disses, rappersBeaten);
+			AITurn(rappers, rappersBeaten);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	void teaseDisAI(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+	void teaseDisAI(Rapper[] rappers, int rappersBeaten) {
 
 		String tease;
 		Random r = new Random();
@@ -248,13 +241,20 @@ public class Main {
 		}
 	}
 
-	void getMenuChoice(int choice, Rapper[] rappers, Dis[] disses) {
+	void giveUp(Rapper[] rappers, int rappersBeaten) {
+		System.out.println("Are you sure you want to let " + rappers[rappersBeaten].name + " take the win?");
+		System.out.println();
+		System.out.println("1. What you chattin' fam? I'm not quitting");
+		System.out.println("2. Yeah, I can't handle his hype");
+	}
+	
+	void getMenuChoice(int choice, Rapper[] rappers) {
 		int rappersBeaten = 0;
 		choice = sc.nextInt();
 
 		switch (choice) {
 		case 1:
-			singleplayer(rappers, disses, rappersBeaten);
+			singleplayer(rappers, rappersBeaten);
 			break;
 		case 2:
 			multiplayer();
@@ -262,7 +262,7 @@ public class Main {
 		}
 	}
 
-	void singleplayer(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+	void singleplayer(Rapper[] rappers, int rappersBeaten) {
 		boolean beaten = false;
 		boolean won;
 
@@ -274,14 +274,14 @@ public class Main {
 
 		won = false;
 
-		checkIfWon(rappers, disses, rappersBeaten, won, beaten);
+		checkIfWon(rappers, rappersBeaten, won, beaten);
 
 	}
 
-	void checkIfWon(Rapper[] rappers, Dis[] disses, int rappersBeaten,
+	void checkIfWon(Rapper[] rappers, int rappersBeaten,
 			boolean won, boolean beaten) {
 		while (rappers[rappersBeaten].hypePoints > 0 && !won) {
-			playGameSP(rappers, disses, rappersBeaten);
+			playGameSP(rappers, rappersBeaten);
 
 			if (rappers[rappersBeaten].hypePoints <= 0) {
 				System.out.println();
@@ -299,7 +299,7 @@ public class Main {
 
 				rappersBeaten++;
 				won = true;
-				singleplayer(rappers, disses, rappersBeaten);
+				singleplayer(rappers, rappersBeaten);
 			}
 
 			if (beaten) {
@@ -313,7 +313,7 @@ public class Main {
 
 	}
 
-	void playGameSP(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+	void playGameSP(Rapper[] rappers, int rappersBeaten) {
 		int choice = 0;
 
 		System.out.println("Your hype: "
@@ -326,6 +326,7 @@ public class Main {
 		System.out.println("1. Your mum dis");
 		System.out.println("2. Name calling dis");
 		System.out.println("3. Teasing dis");
+		System.out.println("4. Give up");
 
 		if (sc.hasNextInt()) {
 			choice = sc.nextInt();
@@ -334,19 +335,22 @@ public class Main {
 		}
 		switch (choice) {
 		case 1:
-			yourMumDis(rappers, disses, rappersBeaten);
+			yourMumDis(rappers,rappersBeaten);
 			break;
 		case 2:
-			callName(rappers, disses, rappersBeaten);
+			callName(rappers, rappersBeaten);
 			break;
 		case 3:
-			teaseDis(rappers, disses, rappersBeaten);
+			teaseDis(rappers, rappersBeaten);
+			break;
+		case 4:
+			
 			break;
 		}
 
 	}
 
-	void AITurn(Rapper[] rappers, Dis[] disses, int rappersBeaten) {
+	void AITurn(Rapper[] rappers, int rappersBeaten) {
 		Random r = new Random();
 		int choice;
 		
@@ -364,24 +368,23 @@ public class Main {
 
 		switch (choice) {
 		case 0:
-			yourMumDisAI(rappers, disses, rappersBeaten);
+			yourMumDisAI(rappers, rappersBeaten);
 			break;
 		case 1:
-			callNameAI(rappers, disses, rappersBeaten);
+			callNameAI(rappers, rappersBeaten);
 			break;
 		case 2:
-			teaseDisAI(rappers, disses, rappersBeaten);
+			teaseDisAI(rappers, rappersBeaten);
 			break;
 		}
 	}
 
 	public Main() {
-		Rapper[] rappers = new Rapper[6];
-		Dis[] disses = new Dis[4];
+		Rapper[] rappers = new Rapper[7];
 		setupRappers(rappers);
 		displayMenu();
 		int choice = 0;
-		getMenuChoice(choice, rappers, disses);
+		getMenuChoice(choice, rappers);
 
 	}
 
