@@ -136,7 +136,7 @@ public class Main {
 			}
 			adj.close();
 			nou.close();
-			
+
 			try {
 				Thread.sleep(1500);
 			} catch (InterruptedException e) {
@@ -147,7 +147,7 @@ public class Main {
 
 			System.out.println(rappers[rappersBeaten].name + " gained "
 					+ hypeGained + "% of the crowd hype");
-			
+
 			try {
 				Thread.sleep(1500);
 			} catch (InterruptedException e) {
@@ -216,7 +216,7 @@ public class Main {
 				}
 			}
 			teaseR.close();
-			
+
 			try {
 				Thread.sleep(1500);
 			} catch (InterruptedException e) {
@@ -227,7 +227,7 @@ public class Main {
 
 			System.out.println("He gained " + hypeGained
 					+ "% of the crowd hype");
-			
+
 			try {
 				Thread.sleep(1500);
 			} catch (InterruptedException e) {
@@ -241,13 +241,27 @@ public class Main {
 		}
 	}
 
-	void giveUp(Rapper[] rappers, int rappersBeaten) {
-		System.out.println("Are you sure you want to let " + rappers[rappersBeaten].name + " take the win?");
+	void giveUp(Rapper[] rappers, int rappersBeaten, boolean beaten) {
+		System.out.println("Are you sure you want to let "
+				+ rappers[rappersBeaten].name + " take the win?");
 		System.out.println();
 		System.out.println("1. What you chattin' fam? I'm not quitting");
 		System.out.println("2. Yeah, I can't handle his hype");
+
+		int choice = sc.nextInt();
+
+		switch (choice) {
+		case 1:
+
+			break;
+		case 2:
+			System.out.println();
+			System.out.println("Aren't you a coward");
+			System.out.println();
+			gameOver(rappers, rappersBeaten);
+		}
 	}
-	
+
 	void getMenuChoice(int choice, Rapper[] rappers) {
 		int rappersBeaten = 0;
 		choice = sc.nextInt();
@@ -278,8 +292,8 @@ public class Main {
 
 	}
 
-	void checkIfWon(Rapper[] rappers, int rappersBeaten,
-			boolean won, boolean beaten) {
+	void checkIfWon(Rapper[] rappers, int rappersBeaten, boolean won,
+			boolean beaten) {
 		while (rappers[rappersBeaten].hypePoints > 0 && !won) {
 			playGameSP(rappers, rappersBeaten);
 
@@ -302,50 +316,55 @@ public class Main {
 				singleplayer(rappers, rappersBeaten);
 			}
 
-			if (beaten) {
-				System.out.println("GAME OVER");
-			}
-
 		}
 	}
 
 	void multiplayer() {
+		System.out.println("Choose your rapper");
 
 	}
 
 	void playGameSP(Rapper[] rappers, int rappersBeaten) {
 		int choice = 0;
+		boolean beaten = false;
+		int yourHype = 100 - rappers[rappersBeaten].hypePoints;
+		int hisHype = rappers[rappersBeaten].hypePoints;
 
-		System.out.println("Your hype: "
-				+ (100 - rappers[rappersBeaten].hypePoints) + "%");
-		System.out.println(rappers[rappersBeaten].name + "'s hype: "
-				+ rappers[rappersBeaten].hypePoints + "%");
+		System.out.println("Your hype: " + yourHype + "%");
+		System.out.println(rappers[rappersBeaten].name + "'s hype: " + hisHype
+				+ "%");
 		System.out.println();
-		System.out.println("What would you like to dis your opponent with?");
-		System.out.println();
-		System.out.println("1. Your mum dis");
-		System.out.println("2. Name calling dis");
-		System.out.println("3. Teasing dis");
-		System.out.println("4. Give up");
 
-		if (sc.hasNextInt()) {
-			choice = sc.nextInt();
-		} else {
-			System.out.println("Okay then..");
-		}
-		switch (choice) {
-		case 1:
-			yourMumDis(rappers,rappersBeaten);
-			break;
-		case 2:
-			callName(rappers, rappersBeaten);
-			break;
-		case 3:
-			teaseDis(rappers, rappersBeaten);
-			break;
-		case 4:
-			
-			break;
+		if (yourHype > 1) {
+
+			System.out
+					.println("What would you like to dis your opponent with?");
+			System.out.println();
+			System.out.println("1. Your mum dis");
+			System.out.println("2. Name calling dis");
+			System.out.println("3. Teasing dis");
+			System.out.println("4. Give up");
+
+			if (sc.hasNextInt()) {
+				choice = sc.nextInt();
+			} else {
+				System.out.println("Okay then..");
+			}
+			switch (choice) {
+			case 1:
+				yourMumDis(rappers, rappersBeaten);
+				break;
+			case 2:
+				callName(rappers, rappersBeaten);
+				break;
+			case 3:
+				teaseDis(rappers, rappersBeaten);
+				break;
+			case 4:
+				giveUp(rappers, rappersBeaten, beaten);
+				break;
+			}
+
 		}
 
 	}
@@ -353,13 +372,14 @@ public class Main {
 	void AITurn(Rapper[] rappers, int rappersBeaten) {
 		Random r = new Random();
 		int choice;
-		
+
 		choice = r.nextInt(3);
-		
+
 		System.out.println();
-		System.out.println("Now it's " + rappers[rappersBeaten].name + "'s turn");
+		System.out.println("Now it's " + rappers[rappersBeaten].name
+				+ "'s turn");
 		System.out.println();
-		
+
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
@@ -377,6 +397,17 @@ public class Main {
 			teaseDisAI(rappers, rappersBeaten);
 			break;
 		}
+	}
+
+	void gameOver(Rapper[] rappers, int rappersBeaten) {
+		System.out.println();
+		System.out
+				.println(rappers[rappersBeaten].name + " won the rap battle!");
+		System.out.println();
+		System.out.println("You got slated too hard and lost all of your hype");
+		System.out.println();
+		System.out.println("GAME OVER");
+		System.exit(0);
 	}
 
 	public Main() {
